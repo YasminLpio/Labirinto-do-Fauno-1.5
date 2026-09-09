@@ -1,0 +1,18 @@
+//classe
+   export class Evento {
+//campos/atributos
+
+    nome: string = "";
+    class: string = "";
+    vida: number = 100;
+    arma: string = "";
+
+//metodos
+    receberDano (dano: number) {
+        this.vida -= dano;
+    }
+    
+    estaVivo() {
+        return this.vida > 0;
+    }
+}
