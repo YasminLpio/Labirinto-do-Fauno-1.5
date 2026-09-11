@@ -8,16 +8,18 @@
     arma: string = "";
 
 //metodos
-    receberDano(dano: number): void {
+    receberDano(dano: number) {
         this.vida -= dano;
+        return this.vida
     }
 
-    curar(cura: number): void {
+    curar(cura: number) {
         this.vida += cura
 
         if (this.vida > 100) {
             this.vida = 100
         }
+        return this.vida
     }
     
     estaVivo() {

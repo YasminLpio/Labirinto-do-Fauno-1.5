@@ -1,4 +1,4 @@
-import { Avatar } from "./Avatar.ts"
+import { Avatar } from "./Avatar.ts";
 import prompt from "prompt-sync";
 
 //Configurações
@@ -47,7 +47,7 @@ let inicio = Number(teclado("Vamos começar então... "))
 
 
 console.log(("-------------------------------------------------------------"));
-console.log("Sua primeira escolha, por onde irá começar sua jornada? \n")
+console.log("Sua primeira escolha, por onde irá começar sua jornada?")
 console.log("1 - Floresta Verdejante.")
 console.log("2 - Deserto Desolado.")
 console.log("3 - Para exibir status.")
@@ -80,7 +80,8 @@ while(!sair && avatar.estaVivo()) {
     continue
   }
   case 5: {
-    sair = !sair
+    sair = sair;
+    !avatar.estaVivo()
     break
   }
   default: {
@@ -88,6 +89,46 @@ while(!sair && avatar.estaVivo()) {
   }
 
 }
+console.log(("-------------------------------------------------------------"));
+console.log("1 - Área Vulcânica.")
+console.log("2 - Mar.")
+console.log("3 - Para exibir status.")
+console.log("4 - Para Mudar o nome.")
+console.log("5 - Para sair.")
+
+  decisao = Number(teclado("Por onde seguir: "))
+
+ switch(decisao) {
+          
+  case 1: { 
+    console.log(`Area Vulcanica`)
+    break
+
+ }
+  case 2: {
+    console.log(`Mar`)
+    break
+  }
+  case 3: {
+    status()
+    teclado
+    continue
+  }
+  case 4: {
+    avatarNome = teclado("Qual será o seu novo nome? ")
+    continue
+  }
+  case 5: {
+    sair = !sair
+    !avatar.estaVivo()
+    break
+  }
+  default: {
+    console.log("Opção inválida")
+  }
+
+}
+
 
 
 
