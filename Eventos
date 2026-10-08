@@ -8,8 +8,12 @@
     arma: string = "";
 
 //metodos
-    receberDano (dano: number) {
-        this.vida -= dano;
+    receberDano (dano: number): number {
+        if (!Number.isFinite(dano) || dano < 0) {
+            throw new Error("O dano deve ser um número não negativo.");
+        }
+        this.vida = Math.max(0, this.vida - dano);
+        return this.vida;
     }
     
     estaVivo() {

@@ -1,28 +1,54 @@
 //classe
-   export class Avatar {
+export class Avatar {
 //campos/atributos
 
-    nome: string = "";
-    class: string = "";
-    vida: number = 100;
-    arma: string = "";
+    private _nome: string = "";
+    private _vida: number = 100;
+    public arma: string = "";
+    public classe: string = "";
 
 //metodos
-    receberDano(dano: number) {
-        this.vida -= dano;
-        return this.vida
+
+    public get nome(): string {
+        return this._nome;
     }
 
-    curar(cura: number) {
-        this.vida += cura
-
-        if (this.vida > 100) {
-            this.vida = 100
+    public set nome(nome: string) {
+        if (nome.trim().length >= 2) {
+            this._nome = nome.trim();
+        } else {
+            throw new Error("Nome inválido.");
         }
-        return this.vida
+    }
+
+    public get vida(): number {
+        return this._vida;
+    }
+
+    public set vida(novaVida: number) {
+        if (novaVida < 0) {
+            throw new Error("A vida não pode ser negativa.");
+        }
+        if (novaVida > 100) {
+            this._vida = 100;
+        } else {
+            this._vida = novaVida;
+        }
+    }
+
+    public set curar(cura: number) {
+        if (cura < 0) {
+            throw new Error("A cura não pode ser negativa.");
+        }
+        this.vida = this._vida + cura;
+    }
+
+    receberDano(dano: number) {
+        this.vida = Math.max(0, this._vida - dano);
+        return this._vida;
     }
     
     estaVivo() {
-        return this.vida > 0;
+        return this._vida > 0;
     }
 }

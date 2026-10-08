@@ -1,385 +1,115 @@
 import { Avatar } from "./Avatar.ts";
 import prompt from "prompt-sync";
 
-//Configurações
+const teclado = prompt();
 
-const teclado = prompt()
-function continuar() {
-    teclado("pressione Enter para continuar...")
+function limparTela() {
+  console.clear();
 }
 
-//Início
+function continuar() {
+  teclado("\nPressione Enter para continuar...");
+}
 
-console.log("Seja bem vindo ao mundo...")
-console.log("Aqui você deve ajudar a decidir o destido de seu 'avatar'");
-let avatarNome = teclado("Qual será o seu nome? ")
+limparTela();
+console.log("=============================================================");
+console.log("                SEJA BEM-VINDO AO LABIRINTO                 ");
+console.log("=============================================================\n");
 
+let avatarNome = teclado("Qual será o nome do seu avatar? ");
 
-// Avatar
-
-var avatar = new Avatar()
-avatar.nome = avatarNome
-avatar.vida
-
-// SAIR --  STATUS
-let mensagem = avatar.vida == 100 ? "Parabéns, você ainda está no jogo :)" : "Você está por um triz."
+var avatar = new Avatar();
+avatar.nome = avatarNome;
 
 let sair = false;
+
 function status() {
-
+  console.log("\n--- STATUS DO AVATAR ---");
+  let mensagem = avatar.vida === 100 ? "Parabéns, você está saudável! :)" : "Cuidado, você está ferido!";
   console.table({
-  NOME: avatarNome ,
-  VIDA: avatar.vida ,
-  Situação: `${mensagem}`
-}) 
-}
-let decisao
-
-
-console.log("Muito bem " + avatarNome + "As instruções são: \n")
-console.log("1- Para seguir pelo primeiro caminho.")
-console.log("2- Para seguir pelo segundo caminho.")
-console.log("3- Para exibir status.")
-console.log("4- Para Mudar o nome.")
-console.log("5- Para sair.")
-let inicio = Number(teclado("Vamos começar então... "))
-
-
-
-console.log(("-------------------------------------------------------------"));
-console.log("Sua primeira escolha, por onde irá começar sua jornada?")
-console.log("1 - Floresta Verdejante.")
-console.log("2 - Deserto Desolado.")
-console.log("3 - Para exibir status.")
-console.log("4 - Para Mudar o nome.")
-console.log("5 - Para sair.")
-
-
-while(!sair && avatar.estaVivo()) {
-
-  let decisao = Number(teclado("Por onde seguir: "))
-
- switch(decisao) {
-          
-  case 1: { 
-    console.log(`Floresta`)
-    break
-
- }
-  case 2: {
-    console.log(`Deserto`)
-    break
-  }
-  case 3: {
-    status()
-    teclado
-    continue
-  }
-  case 4: {
-    avatarNome = teclado("Qual será o seu novo nome? ")
-    continue
-  }
-  case 5: {
-    sair = sair;
-    !avatar.estaVivo()
-    break
-  }
-  default: {
-    console.log("Opção inválida")
-  }
-
-}
-console.log(("-------------------------------------------------------------"));
-console.log("1 - Área Vulcânica.")
-console.log("2 - Mar.")
-console.log("3 - Para exibir status.")
-console.log("4 - Para Mudar o nome.")
-console.log("5 - Para sair.")
-
-  decisao = Number(teclado("Por onde seguir: "))
-
- switch(decisao) {
-          
-  case 1: { 
-    console.log(`Area Vulcanica`)
-    break
-
- }
-  case 2: {
-    console.log(`Mar`)
-    break
-  }
-  case 3: {
-    status()
-    teclado
-    continue
-  }
-  case 4: {
-    avatarNome = teclado("Qual será o seu novo nome? ")
-    continue
-  }
-  case 5: {
-    sair = !sair
-    !avatar.estaVivo()
-    break
-  }
-  default: {
-    console.log("Opção inválida")
-  }
-
+    Nome: avatar.nome,
+    Vida: avatar.vida,
+    Situação: mensagem
+  });
 }
 
+limparTela();
+console.log(`Muito bem, ${avatar.nome}! Sua jornada começa agora.\n`);
 
+while (!sair && avatar.estaVivo()) {
+  console.log("-------------------------------------------------------------");
+  console.log("Sua escolha: por onde irá seguir sua jornada?");
+  console.log("1 - Floresta Verdejante");
+  console.log("2 - Deserto Desolado");
+  console.log("3 - Descansar no acampamento");
+  console.log("4 - Exibir status");
+  console.log("5 - Mudar o nome");
+  console.log("6 - Sair");
+  
+  let decisao = Number(teclado("Por onde seguir: "));
 
-
-
-
+  switch (decisao) {
+    case 1: {
+      limparTela();
+      console.log("Você adentrou a Floresta Verdejante...");
+      console.log("Espinhos atingiram você! Perdeu 30 de vida.");
+      avatar.receberDano(30);
+      continuar();
+      limparTela();
+      break;
+    }
+    case 2: {
+      limparTela();
+      console.log("Você adentrou o Deserto Desolado...");
+      console.log("O calor escaldante te esgotou! Perdeu 50 de vida.");
+      avatar.receberDano(50);
+      continuar();
+      limparTela();
+      break;
+    }
+    case 3: {
+      limparTela();
+      console.log("Você parou para descansar e recuperar suas energias...");
+      avatar.curar = 30;
+      console.log(`Vida atual de ${avatar.nome}: ${avatar.vida}`);
+      continuar();
+      limparTela();
+      break;
+    }
+    case 4: {
+      limparTela();
+      status();
+      continuar();
+      limparTela();
+      break;
+    }
+    case 5: {
+      limparTela();
+      let novoNome = teclado("Qual será o seu novo nome? ");
+      avatar.nome = novoNome;
+      console.log("Nome alterado com sucesso!");
+      continuar();
+      limparTela();
+      break;
+    }
+    case 6: {
+      sair = true;
+      limparTela();
+      console.log("Saindo da jornada...");
+      break;
+    }
+    default: {
+      limparTela();
+      console.log("Opção inválida! Escolha um número de 1 a 6.");
+      continuar();
+      limparTela();
+      break;
+    }
+  }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-if (inicio == 0) {
-    console.log("Que pena, volte mais tarde")
-    stop
-} else if (inicio != 1 && inicio != 0) {
-    console.log("Não lhe entendi")
-    stop
-    
+if (!avatar.estaVivo()) {
+  console.log("\n=============================================================");
+  console.log(`Game Over! ${avatar.nome} não resistiu aos perigos.`);
+  console.log("=============================================================");
 }
-
-       console.log("Ao longo dessa jornada você construirá um caminho para " + avatarNome)
-       console.log(("-------------------------------------------------------------"));
-            
-               console.log("Sua primeira escolha, por onde irá iniciar sua jornada? \n" +
-                                        "1 - Floresta Verdejante \n" +
-                                        "2 - Deserto Desolado \n" +
-                                        `${avatarNome}  pergunta por onde seguir: `
-        );
-
-
-
-while(!sair && avatar.estaVivo()) {
-
-        let primeiraDecisao = Number(teclado(" "))
-        
-        switch (primeiraDecisao) {
-
-            case 1:
-
-            console.log("Você adentrou a floresta \n" +
-                        `${avatarNome} encontrou frutas, deseja comer? Sim(1) Não(2) `);
-                        
-                let comerFruta = Number(teclado(" "))
-
-                  if (comerFruta == 1) {
-                    avatar.receberDano(50)
-
-                    console.log(`${avatarNome} foi envenenado.`)
-                    console.log(`Vida = ${avatar.vida}`)
-                  } else {
-                    console.log("Delícia.")
-                  }
-             continuar()
-                break
-            case 2:
-
-            console.log("Você adentrou o deserto\n" +
-                        `${avatarNome} murmura estar sem suprimentos para enfrentar tal desafio`
-
-             ); continuar()
-             avatar.receberDano(100)
-             break
-
-             default:
-                console.log("Pense novamente")
-                break
-
-        }
-
-        if (avatar.estaVivo() == true) {
-    console.log("você chegou ao fim")
-} else {
-console.log(`${avatarNome} morreu de fome`)
-
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- console.log(`..                     .... ....                    ...........                   .... ....         
-                       .....                          .....                         .....           
-                   ................                ..........    ...............  .........         
-...            ....:-=++=----=++=-:.....        ........  .......-=++==---=++=-:.....  ......       
-....          ..-==-::::::::::::::-==-...       .......    ..:==-:::::::::::::::===:..   ......     
-  .....   ....+-:::::::::::::::::::::-+=...   .............:+-:::::::::::::::::::::-+-....   ....   
-      ......+-:::::::::::::::::::::::::-*=. ....       ..:+:::::::::::::::::::-----:::*:..     .....
-        ..-=::::---=---::::::::::::::::-==+:...       ..=-::::::::::::::::--=========-:-=:..      ..
-       ..+-:::-==========-::::::::::::::-==+-.:::.:::.:=:::::::::::::::::-=============::=:..       
-     ...+:::-=======++=====-::::::::::::-===+-=-=-*=++*-:::::::::::::::-=====++========-::+:.     ..
-     ..=-::-====*@@%@@@@@#===-::::::::::-==+*:=*-::**=*+:::::::::::::-===*@@@@@%@@#=====-::+:.. ....
-    ..--:::-==+###%*+***+*@#=--+::::::::====-#-==::*=#+==::::::::::==:=*@%++**++#%*%*===-:::=.....  
-  ....=:::-===%*%+====*+===*#=-:-:::::-++=-:::-:-:-=+===-===-::::::::=*#==+=*=====###+===-::-:..    
-.....:=:::-==#*%+*#+=**++***++=::::::-+*-+#---=+-::+*=+=**-*==::::::=++**#+++#+=**=#*#===:::--..    
-   ..--:::-==###*======*.....-==+#*=-+++#::*=-:--::====#=:#=#=--+#*==*.....=+=====+##*=--::::=..    
-   ..=-:::-==+%++*#*++-...:=**+*===**=+*-:==+:*-=:=:+++++-:#++**+==+*+**=...:*=*#*=+*+=--::::=:.    
-  ...--::::==+#==++=+-..:==**+==++==*+*==---=-#:=-=-++*==-==*++==+++=+**=+-..:+==+=-++==-::::=..    
-.....:=::::-=+#==+===:+===***#+=#==#=+#*=-+-::-=*-%-======-+#+=%==*++#***===+.-===--++==-:::--..    
- ... .=::::-==*==++==+==**+%*=+@+==+===+@@+=+:::+-=-==++=%@*===*===%*=+#*+#==*===+==++=-::::--..    
-    ..-=::::-=*=*==++*+==++=+%%+=+##==+-:::::-=-:-:-+#::::::=+=*#*==%%*=+*+=+%+*==*++==:::::=...... 
-     ..=-::::-==+*=++==%#+======++=:::::::::::-=++**-:::::::::::=++======+#%+=++=+*===:::::+:.......
-     ..:+-::::-==*++#+#+==***#+#=::::::::::::::=+=:::::::::::::::==#=#***===#=#*=*===::::-+-.    ...
-     ....*-::::-====+=+===*%**===-::::-::::::::::::::::::::::-:::-===+*#*===++++====::::-*-..      .
-        ..+=-:::-===++=#=====++==++=:---:::::::::::::::::::-=-:-++===#=====*+=*===-::::=+:.     ....
-      .....=+=-:::=+=*=#++**===+***++=-+=-::::::::::::::::=*-=+*+***+==+*=**+*++=-::--=+:.     .... 
-   ....   ..:++=--:-++***+==*++**++++*+=++=-::::::::::::==+=***+++**+=*+==***++=:--==+:.     ....   
- ....       ...=+======+*-=*++=**#%@%%*+=+#+==-:::::-==+*++++##*@#**==+*+-++=======+:....  ....     
-.....         ...-%%##+---::=+==+======*#=#%*=++-::=*=+##+*#======++=+=-::--=*##%+....   .....      
-...         ...-+=+::::-:+#=:==+#*-=*@%*=*%*=+=-::::=+=+#*=+#@#+:+#+=+--**-:::::==+=........        
-           ..===--:::==:==:-=-=-=+=:=+=.:+=*#+=-::::==*+==-.-+=:-+====-=::+--+:::-:===....          
-      .. ..:+-:-=*=++*+++*-:=--::+#=:::--=*+:-=-::::==-=*=--:::-**===-=-:*+++*=+=*=--:=-.....       
-.... ....=+:-==*+++======+=#===:::::------:::=#-::::=======---------==-*-*=======++++=-:=+:..       
- ......==-=*++++========++---==::::::::::::-==*:::::++===-:::::::::-==--:-*========++++*+--+:..     
-   ...:*++++++*+++++++====--:-==-:::::::::=+-==::::-===++=-:::::::-===--:+-==+*+++++**+++++*=....   
-     .............  ...-=-:=::+==-:::::::-=-:::::::-=======::::::-==+-:=::=-:...   ..........  .....
-         .......       :=-==:-+===-::::::==-:::::::-=======-::::-===*+:-=+--..                    ..
-         .....        ..=*:::--*=+=-:::====+**=----==+*+====-::-===*--:::++:.                       
-       .........      ..+-:=-:-:+++==**+======++=++++=======**==+++-=:-=:-+-.                   ....
-     ....     ...      -+=+:==-:-==+++=+--:*=--=-#:::--#:--===++==--:==-+-+-..               .......
-   ....           ..   --=:=-=-=-=--+-+=+==#*-=:::::::+%+-*:*-+----=:--=:+:-.....          ....     
- ....              ....:=-:=-+-=-:=-:=****++***+===+*#*+++**++::=--+-+==:---.......     .......     
-....                 ...=+-:=:==:-=+++==#@@%+*#*=:-+#*=#@@%===++=--=+:--:+=:.   ..............      
-                       ..=--:-::=-=====*+====*+=:::-+*+====%=======-:-:-:*...      ........         
-                      ...--:+:=--::=%#+*=+=:::::::::::::-==#=*%+-:-:*:==:*...     .......           
-.                 .......=-+-:--+-:=======+#+----+=---=**======+:-=-=:-=-*...    ...........        
-....              .......:=-=:=-::-:-++==++=+##*****##*==+===+=::-:-=:----............  ......      
- .....            ........-=-+-+---:=+=*-=--:::::::::::-=--#-==-:=-+-+--=...........       .....    
-     ...        ..        ..+:-:+::-+-==#:-::::::::::::-::#:*:+-::+-:-=-.   ...                .... 
-      ....    ...        ..-:::*:-+---:=-*--+=:::::::-*:-*-*:--:==:*:-:=.....                   ....
-         ......          ..*:----+=+-:----=+-+-::::::+:*---:+::+===----+....                      ..
-         .....            .*=+:=:=*-::=-:--:*:+++:#=*-#---::=-::*+-=:-++:.                          
-       ...   ..           .#+=:*:-+=:-+:+:==-:-++-*==:=-+:+:-+:-+=:+--+*:.                      ....
-     ....     .....      ..*++-#:=+=-=--*:=+:::--::=:::-*:=-:=-=*=-*-=**.. ...                ..... 
- ......          ....    ..:*==++++==*:+-:+=::-=:::-=::===:#:++=+*=*-++-.   .....           .....   
-.....             .....   ..:+=-+*==*+-*--+-=:-=-::=---+==:#-=+==++-=+-..     ......       ....     
-.....                ..... ....++=*=*==*-:-:+:-+=::+=-#:--:+==*=*+=*:....         ....   .....      
-                         .......:+=====+-:::::+-::::=-:::::+=====+=...              ......          
-                       .....    ..=+==+*-::-:++:::::-*:-:::#+==++-..               ......           
-                     ....   ........:===++---*=+:::-+=---=*==+-....               ..   ....         
-....               ....      ....  ...====-++*=+-=:==+=#-====-..                ...     .....       
-  .....          ....           .......+==++*==+=*-+==*++==*:.......         ....            ....   
-    .....      ....               ......:+++#=#=+.+=++**++-..    ....      ....               ..... 
-        ...   ....                   ......-*==+-..*==++....      .....  .....                  ....
-         .......                      .......+++-..+=*:.           .........                      ..
-        ......                       ........ .......  .            ......                      ....
-....................................................................................................
-%%%%%#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%#=+*+*++**#*#+=**=#*++**#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#%%%%##########%%%%%%#%%%###%#%%%%%%%
-%%#+*+**+*==*+*++-+**+*+++#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%`);
-
-*/
-
